@@ -2,76 +2,95 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>World Food Tour Roleplay - Student Focused</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>World Food Tour Roleplay - Mobile Optimized</title>
     <style>
         :root { --primary: #4A90E2; --secondary: #F5A623; --action: #007bff; --bg: #f8f9fa; --highlight: #ffec99; }
-        body { font-family: 'Pretendard', -apple-system, sans-serif; background-color: var(--bg); margin: 0; display: flex; flex-direction: column; align-items: center; }
-        .container { width: 95%; max-width: 1000px; background: white; padding: 2rem; border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); margin-top: 2rem; text-align: center; }
+        body { font-family: 'Pretendard', -apple-system, sans-serif; background-color: var(--bg); margin: 0; display: flex; flex-direction: column; align-items: center; -webkit-tap-highlight-color: transparent; }
+        .container { width: 95%; max-width: 1000px; background: white; padding: 1.5rem; border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); margin-top: 1rem; text-align: center; }
         
         /* 국가 선택 그리드 */
-        .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-top: 1.5rem; }
-        .card { background: #fff; padding: 1.5rem; border-radius: 15px; cursor: pointer; transition: 0.3s; font-weight: bold; font-size: 1.2rem; border: 2px solid #eee; }
-        .card:hover { border-color: var(--primary); background: #e3f2fd; transform: translateY(-5px); }
-
-        /* 단어 주머니 */
-        .word-bank { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin: 20px 0; padding: 20px; background: #fff9db; border: 2px dashed var(--secondary); border-radius: 15px; }
-        .word { background: var(--secondary); color: white; padding: 10px 18px; border-radius: 25px; cursor: grab; font-size: 1.1rem; font-weight: bold; }
+        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 1rem; }
+        @media (min-width: 600px) { .grid { grid-template-columns: repeat(4, 1fr); } }
         
-        /* 대본 편집기 (학습 단계) */
-        .script-line { margin-bottom: 20px; text-align: left; padding: 15px; border-left: 6px solid var(--primary); background: #fcfcfc; border-radius: 0 12px 12px 0; cursor: pointer; }
-        .role-tag { font-weight: 800; color: white; background: #333; padding: 4px 10px; border-radius: 6px; margin-right: 12px; font-size: 0.9rem; display: inline-block; }
-        .en-text { font-size: 1.4rem; font-weight: bold; display: block; margin-bottom: 5px; color: #222; }
-        .kr-text { font-size: 1rem; color: #777; display: block; }
+        .card { background: #fff; padding: 1.2rem; border-radius: 15px; cursor: pointer; font-weight: bold; font-size: 1.1rem; border: 2px solid #eee; }
+        
+        /* 단어 주머니 - 모바일 드래그 최적화 */
+        .word-bank { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin: 15px 0; padding: 15px; background: #fff9db; border: 2px dashed var(--secondary); border-radius: 15px; }
+        .word { 
+            background: var(--secondary); 
+            color: white; 
+            padding: 12px 20px; 
+            border-radius: 25px; 
+            cursor: grab; 
+            font-size: 1.1rem; 
+            font-weight: bold;
+            /* 텍스트 선택 방지 핵심 코드 */
+            user-select: none; 
+            -webkit-user-select: none; 
+            -webkit-user-drag: element;
+            touch-action: none; /* 브라우저 스크롤 방지 */
+        }
+        .word:active { cursor: grabbing; opacity: 0.8; }
+        
+        /* 대본 편집기 */
+        .script-line { margin-bottom: 15px; text-align: left; padding: 12px; border-left: 6px solid var(--primary); background: #fcfcfc; border-radius: 0 12px 12px 0; }
+        .role-tag { font-weight: 800; color: white; background: #333; padding: 3px 8px; border-radius: 6px; margin-right: 10px; font-size: 0.8rem; display: inline-block; }
+        .en-text { font-size: 1.3rem; font-weight: bold; display: block; margin-bottom: 5px; color: #222; line-height: 1.4; }
+        .kr-text { font-size: 0.95rem; color: #777; display: block; }
         .action-text { color: var(--action); font-style: italic; font-size: 0.9rem; }
-        .drop-zone { display: inline-block; min-width: 100px; border-bottom: 3px solid var(--primary); text-align: center; height: 30px; vertical-align: bottom; color: #d9534f; }
+        
+        /* 드롭 존 */
+        .drop-zone { 
+            display: inline-block; 
+            min-width: 90px; 
+            border-bottom: 3px solid var(--primary); 
+            text-align: center; 
+            min-height: 28px; 
+            vertical-align: bottom; 
+            color: #d9534f; 
+            margin: 0 5px;
+        }
 
-        .btn-box { margin-top: 30px; display: flex; gap: 20px; justify-content: center; }
-        button { padding: 15px 35px; border: none; border-radius: 12px; cursor: pointer; font-weight: bold; font-size: 1.2rem; }
+        .btn-box { margin: 20px 0; display: flex; gap: 10px; justify-content: center; }
+        button { padding: 12px 25px; border: none; border-radius: 12px; cursor: pointer; font-weight: bold; font-size: 1.1rem; }
         .btn-present { background: #dc3545; color: white; }
         .btn-back { background: #6c757d; color: white; }
 
-        /* 발표 모드 오버레이 (대폭 간소화) */
-        #present-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 100; flex-direction: column; align-items: center; justify-content: flex-start; padding: 20px; box-sizing: border-box; }
-        #present-img { width: 25%; max-height: 18vh; object-fit: cover; border-radius: 15px; margin-bottom: 10px; border: 3px solid #eee; }
-        
-        .present-content-box { width: 100%; max-width: 800px; text-align: left; }
-        .present-line { font-size: 1.25rem; font-weight: bold; margin-bottom: 6px; padding: 6px 12px; border-radius: 8px; cursor: pointer; transition: 0.2s; border: 1px solid transparent; line-height: 1.3; }
-        .present-line:hover { background: #f1f3f5; }
+        /* 발표 모드 */
+        #present-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 100; flex-direction: column; align-items: center; padding: 15px; box-sizing: border-box; }
+        #present-img { width: 35%; max-height: 15vh; object-fit: cover; border-radius: 12px; margin-bottom: 10px; }
+        .present-content-box { width: 100%; max-width: 800px; }
+        .present-line { font-size: 1.2rem; font-weight: bold; margin-bottom: 5px; padding: 8px 12px; border-radius: 8px; border: 1px solid transparent; line-height: 1.3; }
         .present-line.active { background-color: var(--highlight); border-color: #fab005; }
+        .p-role { color: var(--primary); font-size: 0.85rem; border: 1.5px solid var(--primary); padding: 1px 4px; border-radius: 4px; margin-right: 8px; display: inline-block; min-width: 65px; text-align: center; }
+        .p-action { color: var(--action); font-weight: normal; font-size: 0.9rem; margin-left: 8px; }
         
-        .p-role { color: var(--primary); font-size: 0.9rem; border: 1.5px solid var(--primary); padding: 1px 5px; border-radius: 4px; margin-right: 10px; display: inline-block; min-width: 70px; text-align: center; }
-        .p-en { color: #212529; }
-        .p-action { color: var(--action); font-weight: normal; font-size: 0.95rem; margin-left: 10px; }
-        
-        .close-btn { position: absolute; top: 10px; right: 25px; font-size: 3rem; cursor: pointer; color: #ced4da; }
+        .close-btn { position: absolute; top: 5px; right: 20px; font-size: 2.5rem; cursor: pointer; color: #ced4da; }
         .hidden { display: none; }
     </style>
 </head>
 <body>
 
 <div class="container" id="step1">
-    <h1>🌍 4인 역할극: 세계 식당 투어</h1>
-    <p>우리 모둠이 발표할 나라를 선택하세요!</p>
+    <h1>🌍 세계 식당 투어</h1>
     <div class="grid" id="menu-grid"></div>
 </div>
 
 <div class="container hidden" id="step2">
     <h2 id="country-title"></h2>
-    <p style="color:#888;">💡 빈칸을 채우고 문장을 클릭해 발음을 연습해 보세요!</p>
     <div class="word-bank" id="word-bank"></div>
     <div id="editor-area"></div>
     <div class="btn-box">
-        <button class="btn-present" onclick="startPresentation()">🎭 발표 모드 시작</button>
+        <button class="btn-present" onclick="startPresentation()">🎭 발표 모드</button>
         <button class="btn-back" onclick="location.reload()">처음으로</button>
     </div>
 </div>
 
 <div id="present-overlay">
     <span class="close-btn" onclick="closePresent()">×</span>
-    <img id="present-img" src="" alt="Food Photo">
+    <img id="present-img" src="" alt="Food">
     <div class="present-content-box" id="present-content"></div>
-    <p style="color:#adb5bd; font-size: 0.85rem; margin-top: 15px;">(자기 대사를 누르면 노란색으로 바뀝니다)</p>
 </div>
 
 <script>
@@ -87,72 +106,71 @@ const data = {
     },
     "USA": { title: "🇺🇸 USA", img: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=800", words: ["Big Apple", "Where", "hot dog", "full"], 
         script: [
-            { role: "Owner", en: "Welcome to the ( Big Apple ) Burger!", kr: "빅 애플 버거에 오신 걸 환영해요!", action: "(모자 쓰며 인사)" },
-            { role: "Server", en: "( Where ) are you from?", kr: "어느 나라에서 오셨나요?", action: "(수첩에 적기)" },
+            { role: "Owner", en: "Welcome to the ( Big Apple ) Burger!", kr: "빅 애플 버거에 오신 걸 환영해요!", action: "" },
+            { role: "Server", en: "( Where ) are you from?", kr: "어느 나라에서 오셨나요?", action: "" },
             { role: "Traveler 1", en: "I'm from France.", kr: "프랑스에서 왔어요.", action: "" },
-            { role: "Traveler 2", en: "Do you want a ( hot dog )?", kr: "핫도그 먹어볼래?", action: "(큰 핫도그 흉내)" },
-            { role: "Traveler 1", en: "Oh, I'm ( full )!", kr: "오, 배가 너무 불러요!", action: "(배 두드리기)" }
+            { role: "Traveler 2", en: "Do you want a ( hot dog )?", kr: "핫도그 먹어볼래?", action: "" },
+            { role: "Traveler 1", en: "Oh, I'm ( full )!", kr: "오, 배가 너무 불러요!", action: "" }
         ]
     },
     "India": { title: "🇮🇳 India", img: "https://images.unsplash.com/photo-1585932231552-05b7202ed28e?q=80&w=800", words: ["Namaste", "from", "curry", "hand"], 
         script: [
-            { role: "Owner", en: "( Namaste )! Welcome to India!", kr: "나마스테! 인도에 오신 걸 환영합니다!", action: "(두 손 모으기)" },
-            { role: "Server", en: "Where are you ( from )?", kr: "어디서 오셨나요?", action: "(물 따라주기)" },
+            { role: "Owner", en: "( Namaste )! Welcome to India!", kr: "나마스테! 인도에 오신 걸 환영합니다!", action: "" },
+            { role: "Server", en: "Where are you ( from )?", kr: "어디서 오셨나요?", action: "" },
             { role: "Traveler 1", en: "I'm from the UK.", kr: "영국에서 왔어요.", action: "" },
-            { role: "Traveler 2", en: "Do you want some ( curry )?", kr: "카레 좀 드셔보실래요?", action: "(밥 비비는 시늉)" },
-            { role: "Traveler 1", en: "We eat with our right ( hand ).", kr: "우리는 오른손으로 먹어요.", action: "(오른손 보여주기)" }
+            { role: "Traveler 2", en: "Do you want some ( curry )?", kr: "카레 좀 드셔보실래요?", action: "" },
+            { role: "Traveler 1", en: "We eat with our right ( hand ).", kr: "우리는 오른손으로 먹어요.", action: "" }
         ]
     },
     "Japan": { title: "🇯🇵 Japan", img: "https://images.unsplash.com/photo-1579871494447-9811cf80d66c?q=80&w=800", words: ["Tokyo", "Where", "Korea", "No"], 
         script: [
-            { role: "Owner", en: "Welcome to ( Tokyo ) Station!", kr: "도쿄 스테이션에 오신 걸 환영합니다!", action: "(깊게 인사)" },
-            { role: "Server", en: "( Where ) are you from?", kr: "어느 나라에서 오셨나요?", action: "(자리 안내)" },
+            { role: "Owner", en: "Welcome to ( Tokyo ) Station!", kr: "도쿄 스테이션에 오신 걸 환영합니다!", action: "" },
+            { role: "Server", en: "( Where ) are you from?", kr: "어느 나라에서 오셨나요?", action: "" },
             { role: "Traveler 1", en: "I'm from ( Korea ).", kr: "한국에서 왔어요.", action: "" },
-            { role: "Traveler 2", en: "Do you want some sushi?", kr: "초밥 좀 먹어볼래?", action: "(와사비 연기)" },
-            { role: "Traveler 1", en: "( No ), thank you.", kr: "아니요, 괜찮아요.", action: "(손 흔들기)" }
+            { role: "Traveler 2", en: "Do you want some sushi?", kr: "초밥 좀 먹어볼래?", action: "" },
+            { role: "Traveler 1", en: "( No ), thank you.", kr: "아니요, 괜찮아요.", action: "" }
         ]
     },
     "China": { title: "🇨🇳 China", img: "https://images.unsplash.com/photo-1541696432-82c6da8ce7bf?q=80&w=800", words: ["Golden", "from", "dim sum", "hot"], 
         script: [
-            { role: "Owner", en: "Welcome to ( Golden ) Dragon!", kr: "골든 드래곤 식당에 오신 걸 환영합니다!", action: "(부채 펼치기)" },
+            { role: "Owner", en: "Welcome to ( Golden ) Dragon!", kr: "골든 드래곤에 오신 걸 환영합니다!", action: "" },
             { role: "Server", en: "Where are you ( from )?", kr: "어느 나라에서 오셨나요?", action: "" },
             { role: "Traveler 1", en: "I'm from Mexico.", kr: "멕시코에서 왔어요.", action: "" },
-            { role: "Traveler 2", en: "Do you want some ( dim sum )?", kr: "딤섬 좀 먹어볼래?", action: "(만두 집는 시늉)" },
-            { role: "Traveler 1", en: "Be careful. It's ( hot )!", kr: "조심해, 뜨거워!", action: "(입으로 호호 불기)" }
+            { role: "Traveler 2", en: "Do you want some ( dim sum )?", kr: "딤섬 좀 먹어볼래?", action: "" },
+            { role: "Traveler 1", en: "Be careful. It's ( hot )!", kr: "조심해, 뜨거워!", action: "" }
         ]
     },
     "Vietnam": { title: "🇻🇳 Vietnam", img: "https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?q=80&w=800", words: ["River", "Where", "Pho", "like"], 
         script: [
-            { role: "Owner", en: "Welcome to Mekong ( River )!", kr: "메콩 강 식당에 오신 걸 환영합니다!", action: "(노 젓는 흉내)" },
-            { role: "Server", en: "( Where ) are you from?", kr: "어느 나라에서 오셨나요?", action: "(젓가락 놓기)" },
+            { role: "Owner", en: "Welcome to Mekong ( River )!", kr: "메콩 강 식당에 오신 걸 환영합니다!", action: "" },
+            { role: "Server", en: "( Where ) are you from?", kr: "어느 나라에서 오셨나요?", action: "" },
             { role: "Traveler 1", en: "I'm from Spain.", kr: "스페인에서 왔어.", action: "" },
-            { role: "Traveler 2", en: "Do you want some ( Pho )?", kr: "쌀국수 좀 먹어볼래?", action: "(면 올리기)" },
-            { role: "Traveler 1", en: "I ( like ) it!", kr: "나 이거 정말 좋아!", action: "(엄지 척)" }
+            { role: "Traveler 2", en: "Do you want some ( Pho )?", kr: "쌀국수 좀 먹어볼래?", action: "" },
+            { role: "Traveler 1", en: "I ( like ) it!", kr: "나 이거 정말 좋아!", action: "" }
         ]
     },
     "Thailand": { title: "🇹🇭 Thailand", img: "https://images.unsplash.com/photo-1559339352-11d035aa65de?q=80&w=800", words: ["Amazing", "from", "Tom Yum", "sour"], 
         script: [
-            { role: "Owner", en: "Welcome to ( Amazing ) Thailand!", kr: "어메이징 태국에 오신 걸 환영합니다!", action: "(코끼리 코 인사)" },
-            { role: "Server", en: "Where are you ( from )?", kr: "어디에서 오셨나요?", action: "(합장 인사)" },
+            { role: "Owner", en: "Welcome to ( Amazing ) Thailand!", kr: "어메이징 태국에 오신 걸 환영합니다!", action: "" },
+            { role: "Server", en: "Where are you ( from )?", kr: "어디에서 오셨나요?", action: "" },
             { role: "Traveler 1", en: "I'm from Canada.", kr: "캐나다에서 왔어요.", action: "" },
-            { role: "Traveler 2", en: "Do you want some ( Tom Yum )?", kr: "똠양꿍 좀 먹어볼래?", action: "(국물 냄새 맡기)" },
-            { role: "Traveler 1", en: "It's ( sour ) and spicy!", kr: "이건 시고 매워!", action: "(눈 찡긋)" }
+            { role: "Traveler 2", en: "Do you want some ( Tom Yum )?", kr: "똠양꿍 좀 먹어볼래?", action: "" },
+            { role: "Traveler 1", en: "It's ( sour ) and spicy!", kr: "이건 시고 매워!", action: "" }
         ]
     },
     "France": { title: "🇫🇷 France", img: "https://images.unsplash.com/photo-1555507036-ab1f4038808a?q=80&w=800", words: ["Fancy", "from", "snails", "surprised"], 
         script: [
-            { role: "Owner", en: "Welcome to ( Fancy ) Paris!", kr: "근사한 파리에 오신 걸 환영합니다!", action: "(콧수염 만지기)" },
+            { role: "Owner", en: "Welcome to ( Fancy ) Paris!", kr: "근사한 파리에 오신 걸 환영합니다!", action: "" },
             { role: "Server", en: "Where are you ( from )?", kr: "어느 나라에서 오셨나요?", action: "" },
             { role: "Traveler 1", en: "I'm from Australia.", kr: "호주에서 왔어요.", action: "" },
-            { role: "Traveler 2", en: "Do you want some ( snails )?", kr: "달팽이 요리 좀 먹어볼래?", action: "(달팽이 흉내)" },
-            { role: "Traveler 1", en: "Oh, I'm ( surprised )!", kr: "오, 정말 놀라워요!", action: "(놀란 표정)" }
+            { role: "Traveler 2", en: "Do you want some ( snails )?", kr: "달팽이 요리 좀 먹어볼래?", action: "" },
+            { role: "Traveler 1", en: "Oh, I'm ( surprised )!", kr: "오, 정말 놀라워요!", action: "" }
         ]
     }
 };
 
 let currentKey = "";
 
-// 초기 화면 그리드
 const grid = document.getElementById('menu-grid');
 Object.keys(data).forEach(key => {
     const card = document.createElement('div');
@@ -162,7 +180,6 @@ Object.keys(data).forEach(key => {
     grid.appendChild(card);
 });
 
-// 연습용 TTS (편집기에서만 작동)
 function speak(text) {
     window.speechSynthesis.cancel();
     const cleanText = text.replace(/\(.*?\)/g, "").trim();
@@ -177,7 +194,7 @@ function loadEditor(key) {
     const country = data[key];
     document.getElementById('step1').classList.add('hidden');
     document.getElementById('step2').classList.remove('hidden');
-    document.getElementById('country-title').innerText = country.title + " Roleplay";
+    document.getElementById('country-title').innerText = country.title;
     
     const bank = document.getElementById('word-bank');
     bank.innerHTML = "";
@@ -186,6 +203,7 @@ function loadEditor(key) {
         span.className = 'word';
         span.innerText = w;
         span.draggable = true;
+        // 터치 기기를 위한 기본 방어
         span.ondragstart = (e) => e.dataTransfer.setData("text", e.target.innerText);
         bank.appendChild(span);
     });
@@ -195,11 +213,9 @@ function loadEditor(key) {
     country.script.forEach(item => {
         const lineDiv = document.createElement('div');
         lineDiv.className = 'script-line';
-        lineDiv.onclick = (e) => { if(e.target.className !== 'drop-zone') speak(lineDiv.querySelector('.en-text').innerText); };
-        
         lineDiv.innerHTML = `
             <span class="role-tag">${item.role}</span>
-            <span class="en-text">${item.en.replace(/\( (.*?) \)/g, '<span class="drop-zone" ondrop="onDrop(event)" ondragover="onDragOver(event)"></span>')}</span>
+            <span class="en-text" onclick="speak(this.innerText)">${item.en.replace(/\( (.*?) \)/g, '<span class="drop-zone" ondrop="onDrop(event)" ondragover="onDragOver(event)"></span>')}</span>
             <span class="kr-text">${item.kr}</span>
             <span class="action-text">${item.action}</span>`;
         area.appendChild(lineDiv);
@@ -210,19 +226,16 @@ function onDragOver(e) { e.preventDefault(); }
 function onDrop(e) {
     e.preventDefault();
     if (e.target.className === 'drop-zone') {
-        e.target.innerText = e.dataTransfer.getData("text");
+        const word = e.dataTransfer.getData("text");
+        e.target.innerText = word;
         e.target.style.color = "#d9534f";
-        setTimeout(() => speak(e.target.closest('.en-text').innerText), 200);
     }
 }
 
-// 발표 모드 (심플 버전)
 function startPresentation() {
     const overlay = document.getElementById('present-overlay');
-    const pImg = document.getElementById('present-img');
     const pContent = document.getElementById('present-content');
-    
-    pImg.src = data[currentKey].img;
+    document.getElementById('present-img').src = data[currentKey].img;
     pContent.innerHTML = "";
     
     document.querySelectorAll('.script-line').forEach(line => {
@@ -233,20 +246,13 @@ function startPresentation() {
         const pLine = document.createElement('div');
         pLine.className = 'present-line';
         pLine.onclick = () => pLine.classList.toggle('active');
-        
-        pLine.innerHTML = `
-            <span class="p-role">${role}</span>
-            <span class="p-en">${en}</span>
-            <span class="p-action">${act}</span>`;
+        pLine.innerHTML = `<span class="p-role">${role}</span><span class="p-en">${en}</span><span class="p-action">${act}</span>`;
         pContent.appendChild(pLine);
     });
-
     overlay.style.display = 'flex';
 }
 
-function closePresent() {
-    document.getElementById('present-overlay').style.display = 'none';
-}
+function closePresent() { document.getElementById('present-overlay').style.display = 'none'; }
 </script>
 
 </body>
