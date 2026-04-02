@@ -3,64 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>World Food Tour Roleplay - 4 People Team</title>
+    <title>World Food Tour Roleplay - Student Focused</title>
     <style>
-        :root { --primary: #4A90E2; --secondary: #F5A623; --action: #007bff; --bg: #f8f9fa; }
+        :root { --primary: #4A90E2; --secondary: #F5A623; --action: #007bff; --bg: #f8f9fa; --highlight: #ffec99; }
         body { font-family: 'Pretendard', -apple-system, sans-serif; background-color: var(--bg); margin: 0; display: flex; flex-direction: column; align-items: center; }
         .container { width: 95%; max-width: 1000px; background: white; padding: 2rem; border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); margin-top: 2rem; text-align: center; }
         
         /* 국가 선택 그리드 */
         .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-top: 1.5rem; }
-        .card { background: #fff; padding: 1.5rem; border-radius: 15px; cursor: pointer; transition: 0.3s; font-weight: bold; font-size: 1.2rem; border: 2px solid #eee; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .card { background: #fff; padding: 1.5rem; border-radius: 15px; cursor: pointer; transition: 0.3s; font-weight: bold; font-size: 1.2rem; border: 2px solid #eee; }
         .card:hover { border-color: var(--primary); background: #e3f2fd; transform: translateY(-5px); }
 
         /* 단어 주머니 */
-        .word-bank { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin: 25px 0; padding: 20px; background: #fff9db; border: 2px dashed var(--secondary); border-radius: 15px; }
-        .word { background: var(--secondary); color: white; padding: 10px 18px; border-radius: 25px; cursor: grab; font-size: 1.1rem; box-shadow: 2px 2px 5px rgba(0,0,0,0.1); font-weight: bold; }
+        .word-bank { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin: 20px 0; padding: 20px; background: #fff9db; border: 2px dashed var(--secondary); border-radius: 15px; }
+        .word { background: var(--secondary); color: white; padding: 10px 18px; border-radius: 25px; cursor: grab; font-size: 1.1rem; font-weight: bold; }
         
-        /* 대본 편집기 */
-        .script-line { margin-bottom: 25px; text-align: left; padding: 18px; border-left: 6px solid var(--primary); background: #fcfcfc; border-radius: 0 12px 12px 0; cursor: pointer; transition: 0.2s; position: relative; }
-        .script-line:hover { background: #f0f7ff; }
-        .role-tag { font-weight: 800; color: white; background: #333; padding: 4px 12px; border-radius: 6px; margin-right: 12px; font-size: 0.9rem; display: inline-block; margin-bottom: 8px; text-transform: uppercase; }
-        .en-text { font-size: 1.5rem; font-weight: bold; display: block; margin-bottom: 6px; color: #222; line-height: 1.4; }
-        .kr-text { font-size: 1.1rem; color: #666; display: block; margin-bottom: 8px; }
-        .action-text { color: var(--action); font-style: italic; font-size: 1rem; font-weight: normal; }
-        .drop-zone { display: inline-block; min-width: 120px; border-bottom: 3px solid var(--primary); text-align: center; height: 32px; vertical-align: bottom; color: #d9534f; font-weight: bold; }
+        /* 대본 편집기 (학습 단계) */
+        .script-line { margin-bottom: 20px; text-align: left; padding: 15px; border-left: 6px solid var(--primary); background: #fcfcfc; border-radius: 0 12px 12px 0; cursor: pointer; }
+        .role-tag { font-weight: 800; color: white; background: #333; padding: 4px 10px; border-radius: 6px; margin-right: 12px; font-size: 0.9rem; display: inline-block; }
+        .en-text { font-size: 1.4rem; font-weight: bold; display: block; margin-bottom: 5px; color: #222; }
+        .kr-text { font-size: 1rem; color: #777; display: block; }
+        .action-text { color: var(--action); font-style: italic; font-size: 0.9rem; }
+        .drop-zone { display: inline-block; min-width: 100px; border-bottom: 3px solid var(--primary); text-align: center; height: 30px; vertical-align: bottom; color: #d9534f; }
 
-        /* 하단 버튼 */
         .btn-box { margin-top: 30px; display: flex; gap: 20px; justify-content: center; }
-        button { padding: 15px 35px; border: none; border-radius: 12px; cursor: pointer; font-weight: bold; font-size: 1.2rem; transition: 0.2s; }
-        .btn-present { background: #dc3545; color: white; box-shadow: 0 4px 0 #b02a37; }
-        .btn-present:active { transform: translateY(3px); box-shadow: none; }
+        button { padding: 15px 35px; border: none; border-radius: 12px; cursor: pointer; font-weight: bold; font-size: 1.2rem; }
+        .btn-present { background: #dc3545; color: white; }
         .btn-back { background: #6c757d; color: white; }
 
-        /* 발표 모드 오버레이 */
-        #present-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 100; flex-direction: column; align-items: center; justify-content: flex-start; padding: 40px; box-sizing: border-box; overflow-y: auto; }
-        #present-img { width: 40%; max-height: 30vh; object-fit: cover; border-radius: 25px; margin-bottom: 30px; border: 8px solid #f8f9fa; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-        .present-line { font-size: 1.8rem; font-weight: bold; margin-bottom: 35px; text-align: center; width: 100%; line-height: 1.6; cursor: pointer; border-bottom: 1px solid #eee; padding-bottom: 20px; }
-        .present-line:hover { color: var(--primary); background: #f9f9f9; }
-        .close-btn { position: absolute; top: 20px; right: 40px; font-size: 4rem; cursor: pointer; color: #ccc; transition: 0.3s; }
-        .close-btn:hover { color: #333; }
+        /* 발표 모드 오버레이 (대폭 간소화) */
+        #present-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 100; flex-direction: column; align-items: center; justify-content: flex-start; padding: 20px; box-sizing: border-box; }
+        #present-img { width: 25%; max-height: 18vh; object-fit: cover; border-radius: 15px; margin-bottom: 10px; border: 3px solid #eee; }
         
+        .present-content-box { width: 100%; max-width: 800px; text-align: left; }
+        .present-line { font-size: 1.25rem; font-weight: bold; margin-bottom: 6px; padding: 6px 12px; border-radius: 8px; cursor: pointer; transition: 0.2s; border: 1px solid transparent; line-height: 1.3; }
+        .present-line:hover { background: #f1f3f5; }
+        .present-line.active { background-color: var(--highlight); border-color: #fab005; }
+        
+        .p-role { color: var(--primary); font-size: 0.9rem; border: 1.5px solid var(--primary); padding: 1px 5px; border-radius: 4px; margin-right: 10px; display: inline-block; min-width: 70px; text-align: center; }
+        .p-en { color: #212529; }
+        .p-action { color: var(--action); font-weight: normal; font-size: 0.95rem; margin-left: 10px; }
+        
+        .close-btn { position: absolute; top: 10px; right: 25px; font-size: 3rem; cursor: pointer; color: #ced4da; }
         .hidden { display: none; }
-        .guide-msg { color: #888; font-size: 1rem; margin: 15px 0; font-weight: 500; }
     </style>
 </head>
 <body>
 
 <div class="container" id="step1">
     <h1>🌍 4인 역할극: 세계 식당 투어</h1>
-    <p>우리 모둠이 연기할 나라를 선택하세요!</p>
+    <p>우리 모둠이 발표할 나라를 선택하세요!</p>
     <div class="grid" id="menu-grid"></div>
 </div>
 
 <div class="container hidden" id="step2">
     <h2 id="country-title"></h2>
-    <p class="guide-msg">💡 단어를 끌어다 문장을 완성하고, 문장을 클릭해 발음을 들어보세요!</p>
+    <p style="color:#888;">💡 빈칸을 채우고 문장을 클릭해 발음을 연습해 보세요!</p>
     <div class="word-bank" id="word-bank"></div>
     <div id="editor-area"></div>
     <div class="btn-box">
-        <button class="btn-present" onclick="startPresentation()">🎭 발표 화면 시작</button>
+        <button class="btn-present" onclick="startPresentation()">🎭 발표 모드 시작</button>
         <button class="btn-back" onclick="location.reload()">처음으로</button>
     </div>
 </div>
@@ -68,95 +70,89 @@
 <div id="present-overlay">
     <span class="close-btn" onclick="closePresent()">×</span>
     <img id="present-img" src="" alt="Food Photo">
-    <div id="present-content" style="width: 100%; max-width: 900px;"></div>
-    <p style="color:#aaa; margin-top: 50px;">(문장을 클릭하면 원어민 발음이 나옵니다)</p>
+    <div class="present-content-box" id="present-content"></div>
+    <p style="color:#adb5bd; font-size: 0.85rem; margin-top: 15px;">(자기 대사를 누르면 노란색으로 바뀝니다)</p>
 </div>
 
 <script>
 const data = {
-    "Italy": { title: "🍕 Italy", img: "https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=800", words: ["Italian", "from", "pizza", "please"], 
+    "Italy": { title: "🇮🇹 Italy", img: "https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=800", words: ["Italian", "from", "pizza", "please"], 
         script: [
-            { role: "Owner", en: "Welcome to our ( Italian ) restaurant!", kr: "저희 이탈리아 식당에 오신 것을 환영합니다!", action: "(입구에서 손님을 맞이하며 크게 팔을 벌리기)" },
-            { role: "Server", en: "Where are you ( from )?", kr: "어디에서 오셨나요?", action: "(메뉴판을 건네며 친절하게 묻기)" },
-            { role: "Traveler 1", en: "I'm from Korea.", kr: "저는 한국에서 왔어요.", action: "(웃으며 대답하기)" },
-            { role: "Traveler 2", en: "Do you want some ( pizza )?", kr: "피자 좀 먹어볼래?", action: "(친구에게 메뉴를 추천하며)" },
-            { role: "Traveler 1", en: "Yes, ( please ).", kr: "네, 주세요.", action: "(피자 냄새를 맡고 행복해하기)" }
+            { role: "Owner", en: "Welcome to our ( Italian ) restaurant!", kr: "저희 이탈리아 식당에 오신 것을 환영합니다!", action: "(팔 벌려 환영하기)" },
+            { role: "Server", en: "Where are you ( from )?", kr: "어디에서 오셨나요?", action: "(메뉴판 건네기)" },
+            { role: "Traveler 1", en: "I'm from Korea.", kr: "저는 한국에서 왔어요.", action: "(웃으며 대답)" },
+            { role: "Traveler 2", en: "Do you want some ( pizza )?", kr: "피자 좀 먹어볼래?", action: "(메뉴 가리키기)" },
+            { role: "Traveler 1", en: "Yes, ( please ).", kr: "네, 주세요.", action: "(맛있게 먹는 흉내)" }
         ]
     },
-    "USA": { title: "🌭 USA", img: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=800", words: ["Big Apple", "Where", "hot dog", "full"], 
+    "USA": { title: "🇺🇸 USA", img: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=800", words: ["Big Apple", "Where", "hot dog", "full"], 
         script: [
-            { role: "Owner", en: "Welcome to the ( Big Apple ) Burger!", kr: "빅 애플 버거에 오신 걸 환영해요!", action: "(모자를 멋지게 쓰며 인사하기)" },
-            { role: "Server", en: "( Where ) are you from?", kr: "어느 나라에서 오셨나요?", action: "(수첩에 적을 준비를 하며)" },
+            { role: "Owner", en: "Welcome to the ( Big Apple ) Burger!", kr: "빅 애플 버거에 오신 걸 환영해요!", action: "(모자 쓰며 인사)" },
+            { role: "Server", en: "( Where ) are you from?", kr: "어느 나라에서 오셨나요?", action: "(수첩에 적기)" },
             { role: "Traveler 1", en: "I'm from France.", kr: "프랑스에서 왔어요.", action: "" },
-            { role: "Traveler 2", en: "Do you want a ( hot dog )?", kr: "핫도그 먹어볼래?", action: "(엄청나게 큰 핫도그를 들고 있는 흉내)" },
-            { role: "Traveler 1", en: "Oh, I'm ( full )!", kr: "오, 배가 너무 불러요!", action: "(배를 통통 두드리기)" }
+            { role: "Traveler 2", en: "Do you want a ( hot dog )?", kr: "핫도그 먹어볼래?", action: "(큰 핫도그 흉내)" },
+            { role: "Traveler 1", en: "Oh, I'm ( full )!", kr: "오, 배가 너무 불러요!", action: "(배 두드리기)" }
         ]
     },
-    "India": { title: "🍛 India", img: "https://images.unsplash.com/photo-1585932231552-05b7202ed28e?q=80&w=800", words: ["Namaste", "from", "curry", "hand"], 
+    "India": { title: "🇮🇳 India", img: "https://images.unsplash.com/photo-1585932231552-05b7202ed28e?q=80&w=800", words: ["Namaste", "from", "curry", "hand"], 
         script: [
-            { role: "Owner", en: "( Namaste )! Welcome to India!", kr: "나마스테! 인도에 오신 걸 환영합니다!", action: "(두 손을 모으고 정중하게 인사하기)" },
-            { role: "Server", en: "Where are you ( from )?", kr: "어디서 오셨나요?", action: "(물잔을 채워주며 묻기)" },
+            { role: "Owner", en: "( Namaste )! Welcome to India!", kr: "나마스테! 인도에 오신 걸 환영합니다!", action: "(두 손 모으기)" },
+            { role: "Server", en: "Where are you ( from )?", kr: "어디서 오셨나요?", action: "(물 따라주기)" },
             { role: "Traveler 1", en: "I'm from the UK.", kr: "영국에서 왔어요.", action: "" },
-            { role: "Traveler 2", en: "Do you want some ( curry )?", kr: "카레 좀 드셔보실래요?", action: "(카레를 밥 위에 얹는 시늉)" },
-            { role: "Traveler 1", en: "We eat with our right ( hand ).", kr: "우리는 오른손으로 먹어요.", action: "(오른손을 사용하여 먹는 법을 가르쳐주기)" }
+            { role: "Traveler 2", en: "Do you want some ( curry )?", kr: "카레 좀 드셔보실래요?", action: "(밥 비비는 시늉)" },
+            { role: "Traveler 1", en: "We eat with our right ( hand ).", kr: "우리는 오른손으로 먹어요.", action: "(오른손 보여주기)" }
         ]
     },
-    "Japan": { title: "🍣 Japan", img: "https://images.unsplash.com/photo-1579871494447-9811cf80d66c?q=80&w=800", words: ["Tokyo", "Where", "Korea", "No"], 
+    "Japan": { title: "🇯🇵 Japan", img: "https://images.unsplash.com/photo-1579871494447-9811cf80d66c?q=80&w=800", words: ["Tokyo", "Where", "Korea", "No"], 
         script: [
-            { role: "Owner", en: "Welcome to ( Tokyo ) Station!", kr: "도쿄 스테이션 식당에 오신 걸 환영합니다!", action: "(고개를 숙여 깊게 인사하기)" },
-            { role: "Server", en: "( Where ) are you from?", kr: "어디서 오셨나요?", action: "(손님을 자리에 앉히며)" },
-            { role: "Traveler 1", en: "I'm from ( Korea ).", kr: "한국에서 왔어요.", action: "(친구와 눈인사 하기)" },
-            { role: "Traveler 2", en: "Do you want some sushi?", kr: "초밥 좀 먹어볼래?", action: "(와사비가 매워 코를 찡긋하는 연기)" },
-            { role: "Traveler 1", en: "( No ), thank you.", kr: "아니요, 괜찮아요.", action: "(이미 배가 많이 부른 표정)" }
+            { role: "Owner", en: "Welcome to ( Tokyo ) Station!", kr: "도쿄 스테이션에 오신 걸 환영합니다!", action: "(깊게 인사)" },
+            { role: "Server", en: "( Where ) are you from?", kr: "어느 나라에서 오셨나요?", action: "(자리 안내)" },
+            { role: "Traveler 1", en: "I'm from ( Korea ).", kr: "한국에서 왔어요.", action: "" },
+            { role: "Traveler 2", en: "Do you want some sushi?", kr: "초밥 좀 먹어볼래?", action: "(와사비 연기)" },
+            { role: "Traveler 1", en: "( No ), thank you.", kr: "아니요, 괜찮아요.", action: "(손 흔들기)" }
         ]
     },
-    "China": { title: " dumpling China", img: "https://images.unsplash.com/photo-1541696432-82c6da8ce7bf?q=80&w=800", words: ["Golden", "from", "dim sum", "hot"], 
+    "China": { title: "🇨🇳 China", img: "https://images.unsplash.com/photo-1541696432-82c6da8ce7bf?q=80&w=800", words: ["Golden", "from", "dim sum", "hot"], 
         script: [
-            { role: "Owner", en: "Welcome to ( Golden ) Dragon!", kr: "골든 드래곤 식당에 오신 걸 환영합니다!", action: "(빨간색 부채를 펼치며 환영하기)" },
-            { role: "Server", en: "Where are you ( from )?", kr: "어느 나라에서 오셨나요?", action: "(따뜻한 차를 내오며)" },
+            { role: "Owner", en: "Welcome to ( Golden ) Dragon!", kr: "골든 드래곤 식당에 오신 걸 환영합니다!", action: "(부채 펼치기)" },
+            { role: "Server", en: "Where are you ( from )?", kr: "어느 나라에서 오셨나요?", action: "" },
             { role: "Traveler 1", en: "I'm from Mexico.", kr: "멕시코에서 왔어요.", action: "" },
-            { role: "Traveler 2", en: "Do you want some ( dim sum )?", kr: "딤섬 좀 먹어볼래?", action: "(김이 모락모락 나는 만두를 보는 흉내)" },
-            { role: "Traveler 1", en: "Be careful. It's ( hot )!", kr: "조심해, 뜨거워!", action: "(손으로 입가에 바람을 불며)" }
+            { role: "Traveler 2", en: "Do you want some ( dim sum )?", kr: "딤섬 좀 먹어볼래?", action: "(만두 집는 시늉)" },
+            { role: "Traveler 1", en: "Be careful. It's ( hot )!", kr: "조심해, 뜨거워!", action: "(입으로 호호 불기)" }
         ]
     },
-    "Vietnam": { title: "🥘 Vietnam", img: "https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?q=80&w=800", words: ["River", "Where", "Pho", "like"], 
+    "Vietnam": { title: "🇻🇳 Vietnam", img: "https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?q=80&w=800", words: ["River", "Where", "Pho", "like"], 
         script: [
-            { role: "Owner", en: "Welcome to Mekong ( River )!", kr: "메콩 강 식당에 오신 걸 환영합니다!", action: "(노를 젓는 흉내를 내며 재미있게 인사)" },
-            { role: "Server", en: "( Where ) are you from?", kr: "어디에서 오셨나요?", action: "(젓가락을 가지런히 놓아주며)" },
+            { role: "Owner", en: "Welcome to Mekong ( River )!", kr: "메콩 강 식당에 오신 걸 환영합니다!", action: "(노 젓는 흉내)" },
+            { role: "Server", en: "( Where ) are you from?", kr: "어느 나라에서 오셨나요?", action: "(젓가락 놓기)" },
             { role: "Traveler 1", en: "I'm from Spain.", kr: "스페인에서 왔어.", action: "" },
-            { role: "Traveler 2", en: "Do you want some ( Pho )?", kr: "쌀국수 좀 먹어볼래?", action: "(면을 길게 들어 올리는 흉내)" },
-            { role: "Traveler 1", en: "I ( like ) it!", kr: "나 이거 정말 좋아!", action: "(박수를 치며 좋아하기)" }
+            { role: "Traveler 2", en: "Do you want some ( Pho )?", kr: "쌀국수 좀 먹어볼래?", action: "(면 올리기)" },
+            { role: "Traveler 1", en: "I ( like ) it!", kr: "나 이거 정말 좋아!", action: "(엄지 척)" }
         ]
     },
-    "Thailand": { 
-        title: "🍲 Thailand", 
-        img: "https://images.unsplash.com/photo-1559339352-11d035aa65de?q=80&w=800", 
-        words: ["Amazing", "from", "Tom Yum", "sour"], 
+    "Thailand": { title: "🇹🇭 Thailand", img: "https://images.unsplash.com/photo-1559339352-11d035aa65de?q=80&w=800", words: ["Amazing", "from", "Tom Yum", "sour"], 
         script: [
-            { role: "Owner", en: "Welcome to ( Amazing ) Thailand!", kr: "어메이징 태국 식당에 오신 것을 환영합니다!", action: "(코끼리 코 모양을 하며 유쾌하게 인사하기)" },
-            { role: "Server", en: "Where are you ( from )?", kr: "어디에서 오셨나요?", action: "(꽃 목걸이를 걸어주는 시늉을 하며)" },
-            { role: "Traveler 1", en: "I'm from Canada.", kr: "저는 캐나다에서 왔어요.", action: "" },
-            { role: "Traveler 2", en: "Do you want some ( Tom Yum )?", kr: "똠양꿍 좀 먹어볼래?", action: "(국물 냄새를 맡고 오묘한 표정 짓기)" },
-            { role: "Traveler 1", en: "It's ( sour ) and spicy!", kr: "이건 시고 매워!", action: "(눈을 찡긋하며 신맛을 온몸으로 표현하기)" }
+            { role: "Owner", en: "Welcome to ( Amazing ) Thailand!", kr: "어메이징 태국에 오신 걸 환영합니다!", action: "(코끼리 코 인사)" },
+            { role: "Server", en: "Where are you ( from )?", kr: "어디에서 오셨나요?", action: "(합장 인사)" },
+            { role: "Traveler 1", en: "I'm from Canada.", kr: "캐나다에서 왔어요.", action: "" },
+            { role: "Traveler 2", en: "Do you want some ( Tom Yum )?", kr: "똠양꿍 좀 먹어볼래?", action: "(국물 냄새 맡기)" },
+            { role: "Traveler 1", en: "It's ( sour ) and spicy!", kr: "이건 시고 매워!", action: "(눈 찡긋)" }
         ]
     },
-    "France": { 
-        title: "🐌 France", 
-        img: "https://images.unsplash.com/photo-1555507036-ab1f4038808a?q=80&w=800", 
-        words: ["Fancy", "from", "snails", "surprised"], 
+    "France": { title: "🇫🇷 France", img: "https://images.unsplash.com/photo-1555507036-ab1f4038808a?q=80&w=800", words: ["Fancy", "from", "snails", "surprised"], 
         script: [
-            { role: "Owner", en: "Welcome to ( Fancy ) Paris!", kr: "근사한 파리에 오신 걸 환영합니다!", action: "(콧수염을 만지며 우아하게 인사하기)" },
-            { role: "Server", en: "Where are you ( from )?", kr: "어디서 오셨나요?", action: "(하얀 수건을 팔에 걸치고 묻기)" },
+            { role: "Owner", en: "Welcome to ( Fancy ) Paris!", kr: "근사한 파리에 오신 걸 환영합니다!", action: "(콧수염 만지기)" },
+            { role: "Server", en: "Where are you ( from )?", kr: "어느 나라에서 오셨나요?", action: "" },
             { role: "Traveler 1", en: "I'm from Australia.", kr: "호주에서 왔어요.", action: "" },
-            { role: "Traveler 2", en: "Do you want some ( snails )?", kr: "달팽이 요리 좀 먹어볼래?", action: "(접시에 달팽이가 기어가는 시늉 하기)" },
-            { role: "Traveler 1", en: "Oh, I'm ( surprised )!", kr: "오, 정말 놀라워요!", action: "(입을 벌리고 뒤로 넘어가는 척하기)" }
+            { role: "Traveler 2", en: "Do you want some ( snails )?", kr: "달팽이 요리 좀 먹어볼래?", action: "(달팽이 흉내)" },
+            { role: "Traveler 1", en: "Oh, I'm ( surprised )!", kr: "오, 정말 놀라워요!", action: "(놀란 표정)" }
         ]
     }
 };
 
 let currentKey = "";
 
-// 메인 그리드 초기화
+// 초기 화면 그리드
 const grid = document.getElementById('menu-grid');
 Object.keys(data).forEach(key => {
     const card = document.createElement('div');
@@ -166,25 +162,23 @@ Object.keys(data).forEach(key => {
     grid.appendChild(card);
 });
 
-// 원어민 음성 재생 (TTS)
+// 연습용 TTS (편집기에서만 작동)
 function speak(text) {
-    window.speechSynthesis.cancel(); // 이전 음성 취소
+    window.speechSynthesis.cancel();
     const cleanText = text.replace(/\(.*?\)/g, "").trim();
     const uttr = new SpeechSynthesisUtterance(cleanText);
     uttr.lang = 'en-US';
-    uttr.rate = 0.85; // 학생용으로 약간 천천히
+    uttr.rate = 0.85;
     window.speechSynthesis.speak(uttr);
 }
 
-// 편집 화면 로드
 function loadEditor(key) {
     currentKey = key;
     const country = data[key];
     document.getElementById('step1').classList.add('hidden');
     document.getElementById('step2').classList.remove('hidden');
-    document.getElementById('country-title').innerText = country.title + " 식당 역할극";
+    document.getElementById('country-title').innerText = country.title + " Roleplay";
     
-    // 단어 주머니 생성
     const bank = document.getElementById('word-bank');
     bank.innerHTML = "";
     [...country.words].sort(() => Math.random() - 0.5).forEach(w => {
@@ -196,73 +190,62 @@ function loadEditor(key) {
         bank.appendChild(span);
     });
 
-    // 대본 줄 생성
     const area = document.getElementById('editor-area');
     area.innerHTML = "";
     country.script.forEach(item => {
         const lineDiv = document.createElement('div');
         lineDiv.className = 'script-line';
+        lineDiv.onclick = (e) => { if(e.target.className !== 'drop-zone') speak(lineDiv.querySelector('.en-text').innerText); };
         
-        // 문장 클릭 시 음성 재생
-        lineDiv.onclick = (e) => {
-            if(e.target.className !== 'drop-zone') {
-                speak(lineDiv.querySelector('.en-text').innerText);
-            }
-        };
-        
-        const roleHtml = `<span class="role-tag">${item.role}</span>`;
-        const enHtml = `<span class="en-text">${item.en.replace(/\( (.*?) \)/g, '<span class="drop-zone" ondrop="onDrop(event)" ondragover="onDragOver(event)"></span>')}</span>`;
-        const krHtml = `<span class="kr-text">${item.kr}</span>`;
-        const actHtml = `<span class="action-text">${item.action}</span>`;
-
-        lineDiv.innerHTML = roleHtml + enHtml + krHtml + actHtml;
+        lineDiv.innerHTML = `
+            <span class="role-tag">${item.role}</span>
+            <span class="en-text">${item.en.replace(/\( (.*?) \)/g, '<span class="drop-zone" ondrop="onDrop(event)" ondragover="onDragOver(event)"></span>')}</span>
+            <span class="kr-text">${item.kr}</span>
+            <span class="action-text">${item.action}</span>`;
         area.appendChild(lineDiv);
     });
 }
 
-// 드래그 앤 드롭 로직
 function onDragOver(e) { e.preventDefault(); }
 function onDrop(e) {
     e.preventDefault();
     if (e.target.className === 'drop-zone') {
-        const word = e.dataTransfer.getData("text");
-        e.target.innerText = word;
+        e.target.innerText = e.dataTransfer.getData("text");
         e.target.style.color = "#d9534f";
-        // 완성 후 해당 문장 읽어주기
         setTimeout(() => speak(e.target.closest('.en-text').innerText), 200);
     }
 }
 
-// 발표 화면 모드
+// 발표 모드 (심플 버전)
 function startPresentation() {
     const overlay = document.getElementById('present-overlay');
     const pImg = document.getElementById('present-img');
     const pContent = document.getElementById('present-content');
     
     pImg.src = data[currentKey].img;
+    pContent.innerHTML = "";
     
-    let fullHtml = "";
     document.querySelectorAll('.script-line').forEach(line => {
         const role = line.querySelector('.role-tag').innerText;
         const en = line.querySelector('.en-text').innerText;
-        const kr = line.querySelector('.kr-text').innerText;
         const act = line.querySelector('.action-text').innerText;
         
-        fullHtml += `
-            <div class="present-line" onclick="speak('${en.replace(/'/g, "\\'")}')">
-                <span style="color:var(--primary)">[${role}]</span> ${en}<br>
-                <span style="font-size:1.2rem; color:#888;">${kr}</span><br>
-                <span style="font-size:1.1rem; color:#007bff; font-weight:normal;">${act}</span>
-            </div>`;
+        const pLine = document.createElement('div');
+        pLine.className = 'present-line';
+        pLine.onclick = () => pLine.classList.toggle('active');
+        
+        pLine.innerHTML = `
+            <span class="p-role">${role}</span>
+            <span class="p-en">${en}</span>
+            <span class="p-action">${act}</span>`;
+        pContent.appendChild(pLine);
     });
 
-    pContent.innerHTML = fullHtml;
     overlay.style.display = 'flex';
 }
 
 function closePresent() {
     document.getElementById('present-overlay').style.display = 'none';
-    window.speechSynthesis.cancel();
 }
 </script>
 
