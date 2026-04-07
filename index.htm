@@ -14,28 +14,26 @@
 
     .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:1rem;}
     @media(min-width:500px){.grid{grid-template-columns:repeat(4,1fr);}}
-    .card{background:#fff;border:1px solid #e0e0e0;border-radius:12px;padding:1rem;cursor:pointer;text-align:center;font-size:1rem;font-weight:500;}
+    .card{background:#fff;border:1px solid #e0e0e0;border-radius:12px;padding:1rem;cursor:pointer;text-align:center;font-size:1rem;font-weight:500;transition:background 0.15s;}
     .card:hover{background:#f0f0f0;}
 
-    .script-line{margin-bottom:12px;padding:12px;border-left:4px solid #4A90E2;background:#fff;border-radius:0 12px 12px 0;cursor:pointer;}
+    .script-line{margin-bottom:12px;padding:12px;border-left:4px solid #4A90E2;background:#fff;border-radius:0 12px 12px 0;cursor:pointer;transition:background 0.15s, border-left-color 0.15s;}
+    .script-line:hover{background:#f5f5f5;}
     .script-line.active{background:#ffec99;border-left-color:#fab005;}
+    .script-line.speaking{background:#e8f4e8;border-left-color:#28a745;}
+
     .role-tag{display:inline-block;font-size:11px;font-weight:500;color:#fff;background:#333;padding:2px 7px;border-radius:5px;margin-right:8px;}
     .en-text{display:block;font-size:1.15rem;font-weight:500;line-height:1.5;margin:6px 0 3px;}
     .kr-text{display:block;font-size:0.9rem;color:#888;}
     .act-text{display:block;font-size:0.8rem;color:#4A90E2;font-style:italic;margin-top:3px;}
 
+    .tts-hint{font-size:12px;color:#aaa;text-align:center;margin-bottom:12px;}
+    .tts-hint span{background:#e8f4e8;color:#28a745;border-radius:5px;padding:2px 8px;font-size:11px;}
+
     .btn-row{display:flex;gap:10px;justify-content:center;margin-top:1rem;}
     button{padding:10px 22px;border:1px solid #ccc;border-radius:10px;cursor:pointer;font-size:1rem;font-weight:500;background:#fff;}
-    .btn-present{background:#dc3545;color:#fff;border-color:#dc3545;}
 
-    .overlay{display:none;position:fixed;inset:0;background:#fff;z-index:999;overflow-y:auto;padding:1rem;}
-    .overlay.show{display:block;}
-    .p-img{width:100%;max-height:180px;object-fit:cover;border-radius:12px;margin-bottom:1rem;}
-    .p-line{padding:10px 12px;border-radius:8px;margin-bottom:8px;cursor:pointer;font-size:1.05rem;font-weight:500;border:1px solid transparent;line-height:1.4;}
-    .p-line.active{background:#ffec99;border-color:#fab005;}
-    .p-role{font-size:11px;border:1.5px solid #4A90E2;color:#4A90E2;padding:1px 5px;border-radius:4px;margin-right:8px;display:inline-block;min-width:65px;text-align:center;}
-    .p-act{color:#4A90E2;font-style:italic;font-size:0.85rem;margin-left:6px;}
-    .close-btn{float:right;font-size:2rem;cursor:pointer;color:#aaa;line-height:1;}
+    .tts-status{text-align:center;font-size:12px;color:#28a745;margin-top:8px;height:16px;}
 
     .hidden{display:none!important;}
   </style>
@@ -49,24 +47,18 @@
 
   <div id="step2" class="hidden">
     <h2 id="country-title"></h2>
-    <p style="font-size:13px;color:#888;text-align:center;margin-bottom:12px;">대사를 클릭하면 하이라이트됩니다</p>
+    <p class="tts-hint">대사를 클릭하면 <span>🔊 영어 발음</span>이 재생됩니다</p>
     <div id="editor-area"></div>
+    <div class="tts-status" id="tts-status"></div>
     <div class="btn-row">
-      <button class="btn-present" onclick="startPresentation()">🎭 발표 모드</button>
-      <button onclick="resetAll()">처음으로</button>
+      <button onclick="resetAll()">← 처음으로</button>
     </div>
   </div>
 </div>
 
-<div class="overlay" id="overlay">
-  <span class="close-btn" onclick="closePresent()">×</span>
-  <img id="p-img" src="" alt="">
-  <div id="p-content"></div>
-</div>
-
 <script>
 const data = {
-  "Italy":   { title:"🇮🇹 Italy",   img:"https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=800",
+  "Italy":   { title:"🇮🇹 Italy",
     script:[
       {role:"Owner",     en:"Welcome to our Italian restaurant!", kr:"저희 이탈리아 식당에 오신 것을 환영합니다!", action:"(팔 벌려 환영하기)"},
       {role:"Server",    en:"Where are you from?",                kr:"어디에서 오셨나요?",                        action:"(메뉴판 건네기)"},
@@ -74,7 +66,7 @@ const data = {
       {role:"Traveler 2",en:"Do you want some pizza?",            kr:"피자 좀 먹어볼래?",                         action:"(메뉴 가리키기)"},
       {role:"Traveler 1",en:"Yes, please!",                       kr:"네, 주세요!",                               action:"(맛있게 먹는 흉내)"}
     ]},
-  "USA":     { title:"🇺🇸 USA",     img:"https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=800",
+  "USA":     { title:"🇺🇸 USA",
     script:[
       {role:"Owner",     en:"Welcome to the Big Apple Burger!", kr:"빅 애플 버거에 오신 걸 환영해요!", action:""},
       {role:"Server",    en:"Where are you from?",              kr:"어느 나라에서 오셨나요?",          action:""},
@@ -82,7 +74,7 @@ const data = {
       {role:"Traveler 2",en:"Do you want a hot dog?",           kr:"핫도그 먹어볼래?",                 action:""},
       {role:"Traveler 1",en:"Oh, I'm so full!",                 kr:"오, 배가 너무 불러요!",            action:""}
     ]},
-  "India":   { title:"🇮🇳 India",   img:"https://images.unsplash.com/photo-1585932231552-05b7202ed28e?q=80&w=800",
+  "India":   { title:"🇮🇳 India",
     script:[
       {role:"Owner",     en:"Namaste! Welcome to India!",       kr:"나마스테! 인도에 오신 걸 환영합니다!", action:""},
       {role:"Server",    en:"Where are you from?",              kr:"어디서 오셨나요?",                   action:""},
@@ -90,7 +82,7 @@ const data = {
       {role:"Traveler 2",en:"Do you want some curry?",          kr:"카레 좀 드셔보실래요?",             action:""},
       {role:"Traveler 1",en:"Yes please. Best curry ever!",     kr:"네! 인생 최고의 카레네요.",         action:"(엄지 척)"}
     ]},
-  "Japan":   { title:"🇯🇵 Japan",   img:"https://images.unsplash.com/photo-1579871494447-9811cf80d66c?q=80&w=800",
+  "Japan":   { title:"🇯🇵 Japan",
     script:[
       {role:"Owner",     en:"Welcome to Tokyo Station!",        kr:"도쿄 스테이션에 오신 걸 환영합니다!", action:""},
       {role:"Server",    en:"Where are you from?",              kr:"어느 나라에서 오셨나요?",            action:""},
@@ -98,7 +90,7 @@ const data = {
       {role:"Traveler 2",en:"Do you want some sushi?",          kr:"초밥 좀 먹어볼래?",                 action:""},
       {role:"Traveler 1",en:"No, thank you. Ramen please!",     kr:"아니요, 괜찮아요. 라멘 부탁해요!", action:""}
     ]},
-  "China":   { title:"🇨🇳 China",   img:"https://images.unsplash.com/photo-1541696432-82c6da8ce7bf?q=80&w=800",
+  "China":   { title:"🇨🇳 China",
     script:[
       {role:"Owner",     en:"Welcome to Golden Dragon!",        kr:"골든 드래곤에 오신 걸 환영합니다!", action:""},
       {role:"Server",    en:"Where are you from?",              kr:"어느 나라에서 오셨나요?",           action:""},
@@ -106,7 +98,7 @@ const data = {
       {role:"Traveler 2",en:"Do you want some dim sum?",        kr:"딤섬 좀 먹어볼래?",                action:""},
       {role:"Traveler 1",en:"It's so hot!",                     kr:"너무 뜨거워!",                     action:"(입 호호 부는 흉내)"}
     ]},
-  "Vietnam": { title:"🇻🇳 Vietnam", img:"https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?q=80&w=800",
+  "Vietnam": { title:"🇻🇳 Vietnam",
     script:[
       {role:"Owner",     en:"Welcome to Mekong River Restaurant!", kr:"메콩 강 식당에 오신 걸 환영합니다!", action:""},
       {role:"Server",    en:"Where are you from?",                 kr:"어느 나라에서 오셨나요?",           action:""},
@@ -114,7 +106,7 @@ const data = {
       {role:"Traveler 2",en:"Do you want some Pho?",               kr:"쌀국수 좀 먹어볼래?",              action:""},
       {role:"Traveler 1",en:"I like it!",                          kr:"나 이거 정말 좋아!",                action:"(엄지 척)"}
     ]},
-  "Thailand":{ title:"🇹🇭 Thailand",img:"https://images.unsplash.com/photo-1559339352-11d035aa65de?q=80&w=800",
+  "Thailand":{ title:"🇹🇭 Thailand",
     script:[
       {role:"Owner",     en:"Welcome to Amazing Thailand!",     kr:"어메이징 태국에 오신 걸 환영합니다!", action:""},
       {role:"Server",    en:"Where are you from?",              kr:"어디에서 오셨나요?",                action:""},
@@ -122,7 +114,7 @@ const data = {
       {role:"Traveler 2",en:"Do you want some Tom Yum?",        kr:"똠양꿍 좀 먹어볼래?",              action:""},
       {role:"Traveler 1",en:"It's sour and spicy!",             kr:"이건 시고 매워!",                  action:"(찡그리는 표정)"}
     ]},
-  "France":  { title:"🇫🇷 France",  img:"https://images.unsplash.com/photo-1555507036-ab1f4038808a?q=80&w=800",
+  "France":  { title:"🇫🇷 France",
     script:[
       {role:"Owner",     en:"Welcome to Fancy Paris!",          kr:"근사한 파리에 오신 걸 환영합니다!", action:""},
       {role:"Server",    en:"Where are you from?",              kr:"어느 나라에서 오셨나요?",           action:""},
@@ -133,6 +125,51 @@ const data = {
 };
 
 let currentKey = "";
+let currentSpeaking = null;
+
+// TTS 지원 여부 확인
+const ttsSupported = 'speechSynthesis' in window;
+
+function speak(text, lineEl) {
+  if (!ttsSupported) {
+    document.getElementById('tts-status').textContent = '이 브라우저는 음성 재생을 지원하지 않습니다.';
+    return;
+  }
+
+  // 이미 같은 줄 재생 중이면 멈추기
+  if (currentSpeaking === lineEl) {
+    window.speechSynthesis.cancel();
+    lineEl.classList.remove('speaking');
+    currentSpeaking = null;
+    document.getElementById('tts-status').textContent = '';
+    return;
+  }
+
+  window.speechSynthesis.cancel();
+  if (currentSpeaking) currentSpeaking.classList.remove('speaking');
+
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.lang = 'en-US';
+  utter.rate = 0.85;
+  utter.pitch = 1;
+
+  currentSpeaking = lineEl;
+  lineEl.classList.add('speaking');
+  document.getElementById('tts-status').textContent = '🔊 재생 중... (다시 클릭하면 정지)';
+
+  utter.onend = () => {
+    lineEl.classList.remove('speaking');
+    currentSpeaking = null;
+    document.getElementById('tts-status').textContent = '';
+  };
+  utter.onerror = () => {
+    lineEl.classList.remove('speaking');
+    currentSpeaking = null;
+    document.getElementById('tts-status').textContent = '';
+  };
+
+  window.speechSynthesis.speak(utter);
+}
 
 const menuGrid = document.getElementById('menu-grid');
 Object.keys(data).forEach(key => {
@@ -145,41 +182,36 @@ Object.keys(data).forEach(key => {
 
 function loadEditor(key) {
   currentKey = key;
+  window.speechSynthesis && window.speechSynthesis.cancel();
+  currentSpeaking = null;
   document.getElementById('step1').classList.add('hidden');
   document.getElementById('step2').classList.remove('hidden');
   document.getElementById('country-title').innerText = data[key].title;
+  document.getElementById('tts-status').textContent = '';
 
   const area = document.getElementById('editor-area');
   area.innerHTML = "";
   data[key].script.forEach(item => {
     const div = document.createElement('div');
     div.className = 'script-line';
-    div.onclick = () => div.classList.toggle('active');
+    div.onclick = () => {
+      div.classList.toggle('active');
+      speak(item.en, div);
+    };
     div.innerHTML = `
       <span class="role-tag">${item.role}</span>
-      <span class="en-text">${item.en}</span>
+      <span class="en-text">🔊 ${item.en}</span>
       <span class="kr-text">${item.kr}</span>
       ${item.action ? `<span class="act-text">${item.action}</span>` : ''}`;
     area.appendChild(div);
   });
 }
 
-function startPresentation() {
-  document.getElementById('p-img').src = data[currentKey].img;
-  const pc = document.getElementById('p-content');
-  pc.innerHTML = "";
-  data[currentKey].script.forEach(item => {
-    const pl = document.createElement('div');
-    pl.className = 'p-line';
-    pl.onclick = () => pl.classList.toggle('active');
-    pl.innerHTML = `<span class="p-role">${item.role}</span>${item.en}${item.action ? `<span class="p-act">${item.action}</span>` : ''}`;
-    pc.appendChild(pl);
-  });
-  document.getElementById('overlay').classList.add('show');
+function resetAll() {
+  window.speechSynthesis && window.speechSynthesis.cancel();
+  currentSpeaking = null;
+  location.reload();
 }
-
-function closePresent() { document.getElementById('overlay').classList.remove('show'); }
-function resetAll() { location.reload(); }
 </script>
 </body>
 </html>
