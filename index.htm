@@ -58,76 +58,81 @@
 
 <script>
 const data = {
-  "Italy":   { title:"🇮🇹 Italy",
+  "Italy": { title:"🇮🇹 Italy",
     script:[
-      {role:"Owner",     en:"Welcome to our Italian restaurant!", kr:"저희 이탈리아 식당에 오신 것을 환영합니다!", action:"(팔 벌려 환영하기)"},
-      {role:"Server",    en:"Where are you from?",                kr:"어디에서 오셨나요?",                        action:"(메뉴판 건네기)"},
-      {role:"Traveler 1",en:"I'm from Korea.",                    kr:"저는 한국에서 왔어요.",                     action:"(웃으며 대답)"},
-      {role:"Traveler 2",en:"Do you want some pizza?",            kr:"피자 좀 먹어볼래?",                         action:"(메뉴 가리키기)"},
-      {role:"Traveler 1",en:"Yes, please!",                       kr:"네, 주세요!",                               action:"(맛있게 먹는 흉내)"}
+      {role:"Owner",     en:"Welcome to our Italian restaurant! Where are you from?", kr:"저희 이탈리아 식당에 오신 것을 환영합니다! 어디서 오셨나요?", action:""},
+      {role:"Traveler 1",en:"I'm from Korea.",                                         kr:"저는 한국에서 왔어요.",                                        action:""},
+      {role:"Server",    en:"Please try some special pizza.",                          kr:"특별한 피자를 맛보세요.",                                      action:""},
+      {role:"Traveler 2",en:"Do you want some pizza?",                                 kr:"피자 좀 먹어볼래?",                                            action:""},
+      {role:"Traveler 1",en:"Yes, please!",                                            kr:"네, 주세요!",                                                  action:""},
+      {role:"Server",    en:"Your pizza is ready.",                                    kr:"피자 나왔습니다.",                                             action:"(피자를 갖다주며)"},
+      {role:"Traveler 1 & 2",en:"It's really good!",                                  kr:"정말 맛있어요!",                                               action:"(치즈를 먹고 쭉 늘이는 동작)"}
     ]},
-  "USA":     { title:"🇺🇸 USA",
+  "USA": { title:"🇺🇸 USA",
     script:[
-      {role:"Owner",     en:"Welcome to the Big Apple Burger!", kr:"빅 애플 버거에 오신 걸 환영해요!", action:""},
-      {role:"Server",    en:"Where are you from?",              kr:"어느 나라에서 오셨나요?",          action:""},
-      {role:"Traveler 1",en:"I'm from France.",                 kr:"프랑스에서 왔어요.",               action:""},
-      {role:"Traveler 2",en:"Do you want a hot dog?",           kr:"핫도그 먹어볼래?",                 action:""},
-      {role:"Traveler 1",en:"Oh, I'm so full!",                 kr:"오, 배가 너무 불러요!",            action:""}
+      {role:"Owner",     en:"Welcome to the Big Apple Burger! Where are you from?",   kr:"빅 애플 버거에 오신 걸 환영해요! 어디서 오셨나요?",            action:""},
+      {role:"Traveler 1",en:"I'm from France.",                                        kr:"프랑스에서 왔어요.",                                           action:""},
+      {role:"Server",    en:"Please try a big hot dog.",                               kr:"큰 핫도그를 맛보세요.",                                        action:""},
+      {role:"Traveler 2",en:"Big? Okay, please.",                                      kr:"크다고요? 그래도 주세요.",                                     action:""},
+      {role:"Server",    en:"Here is your hot dog.",                                   kr:"핫도그 나왔습니다.",                                           action:"(엄청 큰 핫도그를 들고 오는 동작)"},
+      {role:"Traveler 1 & 2",en:"Oh my god! It's too big.",                            kr:"세상에! 너무 커요.",                                           action:"(엄청 놀라는 동작)"}
     ]},
-  "India":   { title:"🇮🇳 India",
+  "India": { title:"🇮🇳 India",
     script:[
-      {role:"Owner",     en:"Namaste! Welcome to India!",       kr:"나마스테! 인도에 오신 걸 환영합니다!", action:""},
-      {role:"Server",    en:"Where are you from?",              kr:"어디서 오셨나요?",                   action:""},
-      {role:"Traveler 1",en:"I'm from the UK.",                 kr:"영국에서 왔어요.",                   action:""},
-      {role:"Traveler 2",en:"Do you want some curry?",          kr:"카레 좀 드셔보실래요?",             action:""},
-      {role:"Traveler 1",en:"Yes please. Best curry ever!",     kr:"네! 인생 최고의 카레네요.",         action:"(엄지 척)"}
+      {role:"Owner",     en:"Namaste! Welcome to India! Where are you from?",         kr:"나마스테! 인도에 오신 걸 환영합니다! 어디서 오셨나요?",        action:""},
+      {role:"Traveler 1",en:"I'm from Korea.",                                         kr:"한국에서 왔어요.",                                             action:""},
+      {role:"Server",    en:"Please try our spicy curry.",                             kr:"매운 카레를 맛보세요.",                                        action:""},
+      {role:"Traveler 2",en:"Spicy? Okay, please.",                                    kr:"맵다고요? 그래도 주세요.",                                     action:""},
+      {role:"Server",    en:"Here is your spicy curry.",                               kr:"카레 나왔습니다.",                                             action:"(카레 그릇을 건네준다)"}
     ]},
-  "Japan":   { title:"🇯🇵 Japan",
+  "Japan": { title:"🇯🇵 Japan",
     script:[
-      {role:"Owner",     en:"Welcome to Tokyo Station!",        kr:"도쿄 스테이션에 오신 걸 환영합니다!", action:""},
-      {role:"Server",    en:"Where are you from?",              kr:"어느 나라에서 오셨나요?",            action:""},
-      {role:"Traveler 1",en:"I'm from Korea.",                  kr:"한국에서 왔어요.",                  action:""},
-      {role:"Traveler 2",en:"Do you want some sushi?",          kr:"초밥 좀 먹어볼래?",                 action:""},
-      {role:"Traveler 1",en:"No, thank you. Ramen please!",     kr:"아니요, 괜찮아요. 라멘 부탁해요!", action:""}
+      {role:"Owner",     en:"Welcome to Tokyo Station! Where are you from?",          kr:"도쿄 스테이션에 오신 걸 환영합니다! 어디서 오셨나요?",         action:""},
+      {role:"Traveler 1",en:"I'm from Korea.",                                         kr:"한국에서 왔어요.",                                             action:""},
+      {role:"Server",    en:"Do you want some salmon sushi?",                          kr:"연어 초밥 드셔보실래요?",                                      action:""},
+      {role:"Traveler 2",en:"No, thanks.",                                             kr:"아니요, 괜찮아요.",                                            action:""},
+      {role:"Server",    en:"We have egg sushi, salmon sushi, shrimp sushi, tuna sushi...", kr:"달걀 스시, 연어 스시, 새우 스시, 참치 스시... 다 있어요.", action:"(아무 스시나 여러개 나열)"},
+      {role:"Traveler 1 & 2",en:"Two ramens, please.",                                 kr:"라멘 두 개 주세요.",                                           action:"(방긋 웃으며)"}
     ]},
-  "China":   { title:"🇨🇳 China",
+  "China": { title:"🇨🇳 China",
     script:[
-      {role:"Owner",     en:"Welcome to Golden Dragon!",        kr:"골든 드래곤에 오신 걸 환영합니다!", action:""},
-      {role:"Server",    en:"Where are you from?",              kr:"어느 나라에서 오셨나요?",           action:""},
-      {role:"Traveler 1",en:"I'm from Mexico.",                 kr:"멕시코에서 왔어요.",                action:""},
-      {role:"Traveler 2",en:"Do you want some dim sum?",        kr:"딤섬 좀 먹어볼래?",                action:""},
-      {role:"Traveler 1",en:"It's so hot!",                     kr:"너무 뜨거워!",                     action:"(입 호호 부는 흉내)"}
+      {role:"Owner",     en:"Welcome to Golden Dragon! Where are you from?",          kr:"골든 드래곤에 오신 걸 환영합니다! 어디서 오셨나요?",           action:""},
+      {role:"Traveler 1",en:"I'm from Mexico.",                                        kr:"멕시코에서 왔어요.",                                           action:""},
+      {role:"Server",    en:"Please try some special dim sum.",                        kr:"특별한 딤섬을 맛보세요.",                                      action:""},
+      {role:"Traveler 2",en:"Okay, please.",                                           kr:"네, 주세요.",                                                  action:""},
+      {role:"Server",    en:"Your dim sums are ready.",                                kr:"딤섬 나왔습니다.",                                             action:"(음식 그릇을 갖다주며)"},
+      {role:"Traveler 1",en:"Ah!!! Ah!!!",                                             kr:"아!!! 아!!!",                                                  action:"(먼저 먹어본다)"},
+      {role:"Traveler 2",en:"What's the matter?",                                      kr:"왜 그래?",                                                     action:"(걱정하며)"},
+      {role:"Traveler 1",en:"It's too hot!",                                           kr:"너무 뜨거워!",                                                 action:"(괴로워한다)"}
     ]},
-  "Vietnam": { title:"🇻🇳 Vietnam",
+
+  "Thailand": { title:"🇹🇭 Thailand",
     script:[
-      {role:"Owner",     en:"Welcome to Mekong River Restaurant!", kr:"메콩 강 식당에 오신 걸 환영합니다!", action:""},
-      {role:"Server",    en:"Where are you from?",                 kr:"어느 나라에서 오셨나요?",           action:""},
-      {role:"Traveler 1",en:"I'm from Spain.",                     kr:"스페인에서 왔어.",                  action:""},
-      {role:"Traveler 2",en:"Do you want some Pho?",               kr:"쌀국수 좀 먹어볼래?",              action:""},
-      {role:"Traveler 1",en:"I like it!",                          kr:"나 이거 정말 좋아!",                action:"(엄지 척)"}
+      {role:"Owner",     en:"Welcome to Amazing Thailand! Where are you from?",       kr:"어메이징 태국에 오신 걸 환영합니다! 어디서 오셨나요?",         action:""},
+      {role:"Traveler 1",en:"I'm from Canada.",                                        kr:"캐나다에서 왔어요.",                                           action:""},
+      {role:"Server",    en:"Please try our special Tom Yum.",                         kr:"특별한 똠양꿍을 맛보세요.",                                    action:""},
+      {role:"Traveler 2",en:"Okay, please.",                                           kr:"네, 주세요.",                                                  action:""},
+      {role:"Server",    en:"Your Tom Yum is ready.",                                  kr:"똠양꿍 나왔습니다.",                                           action:"(음식 그릇을 갖다주며)"},
+      {role:"Traveler 1",en:"Ah! Ah!",                                                 kr:"아! 아!",                                                      action:"(먼저 먹어본다)"},
+      {role:"Traveler 2",en:"What's the matter?",                                      kr:"왜 그래?",                                                     action:"(걱정하며)"},
+      {role:"Traveler 1",en:"It's too sour!",                                          kr:"너무 시어!",                                                   action:"(신맛에 힘들어하는 표정으로)"}
     ]},
-  "Thailand":{ title:"🇹🇭 Thailand",
+  "France": { title:"🇫🇷 France",
     script:[
-      {role:"Owner",     en:"Welcome to Amazing Thailand!",     kr:"어메이징 태국에 오신 걸 환영합니다!", action:""},
-      {role:"Server",    en:"Where are you from?",              kr:"어디에서 오셨나요?",                action:""},
-      {role:"Traveler 1",en:"I'm from Canada.",                 kr:"캐나다에서 왔어요.",                action:""},
-      {role:"Traveler 2",en:"Do you want some Tom Yum?",        kr:"똠양꿍 좀 먹어볼래?",              action:""},
-      {role:"Traveler 1",en:"It's sour and spicy!",             kr:"이건 시고 매워!",                  action:"(찡그리는 표정)"}
-    ]},
-  "France":  { title:"🇫🇷 France",
-    script:[
-      {role:"Owner",     en:"Welcome to Fancy Paris!",          kr:"근사한 파리에 오신 걸 환영합니다!", action:""},
-      {role:"Server",    en:"Where are you from?",              kr:"어느 나라에서 오셨나요?",           action:""},
-      {role:"Traveler 1",en:"I'm from Australia.",              kr:"호주에서 왔어요.",                 action:""},
-      {role:"Traveler 2",en:"Do you want some snails?",         kr:"달팽이 요리 좀 먹어볼래?",         action:""},
-      {role:"Traveler 1",en:"Oh, I'm so surprised!",            kr:"오, 정말 놀라워요!",               action:"(깜짝 놀라는 표정)"}
+      {role:"Owner",     en:"Welcome to Fancy Paris! Where are you from?",            kr:"근사한 파리에 오신 걸 환영합니다! 어디서 오셨나요?",           action:""},
+      {role:"Traveler 1",en:"I'm from Australia.",                                     kr:"호주에서 왔어요.",                                             action:""},
+      {role:"Server",    en:"Do you want some Escargot?",                              kr:"에스카르고 드셔보실래요?",                                     action:""},
+      {role:"Traveler 2",en:"Escargot? Okay.",                                         kr:"에스카르고요? 네.",                                            action:"(뭔지 모르겠지만 일단 시킴)"},
+      {role:"Server",    en:"Here are your Escargot.",                                 kr:"에스카르고 나왔습니다.",                                       action:"(음식 그릇을 갖다주며)"},
+      {role:"Traveler 1",en:"Delicious! What is it?",                                  kr:"맛있어요! 이게 뭐예요?",                                       action:"(먹어보고)"},
+      {role:"Server",    en:"They are snails.",                                        kr:"달팽이예요.",                                                  action:""},
+      {role:"Traveler 1 & 2",en:"Snail? Oh! No!",                                     kr:"달팽이요? 오! 안 돼!",                                         action:""}
     ]}
 };
 
 let currentKey = "";
 let currentSpeaking = null;
 
-// TTS 지원 여부 확인
 const ttsSupported = 'speechSynthesis' in window;
 
 function speak(text, lineEl) {
@@ -135,8 +140,6 @@ function speak(text, lineEl) {
     document.getElementById('tts-status').textContent = '이 브라우저는 음성 재생을 지원하지 않습니다.';
     return;
   }
-
-  // 이미 같은 줄 재생 중이면 멈추기
   if (currentSpeaking === lineEl) {
     window.speechSynthesis.cancel();
     lineEl.classList.remove('speaking');
@@ -144,7 +147,6 @@ function speak(text, lineEl) {
     document.getElementById('tts-status').textContent = '';
     return;
   }
-
   window.speechSynthesis.cancel();
   if (currentSpeaking) currentSpeaking.classList.remove('speaking');
 
@@ -167,7 +169,6 @@ function speak(text, lineEl) {
     currentSpeaking = null;
     document.getElementById('tts-status').textContent = '';
   };
-
   window.speechSynthesis.speak(utter);
 }
 
